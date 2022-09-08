@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Page Produit{% endblock%}
+
+
+{% block navbar %}
+<div class="d-flex align-items-center justify-content-end mr-5">
+    <img src="/static/images/user-regular.svg" style="width: 25px; height: 25px;"> Hey, {{g.user.username}}
+    <div class="ml-3 mr-5">
+        <a href="/panier"><div class="ml-3 text-danger"><img src="/static/images/shopping-cart-solid.svg" style="width: 25px; height: 25px;"> {{listPanier|length}} Article(s)</div></a>
+    </div>
+    <div class="ml-5">
+        <a href="/deconnexion"><button type="button" class="btn btn-danger">déconnexion</button></a>
+    </div>
+</div>
+{% endblock%}
+
+
+
+{% block content %}
+<div id="test" class="container-fluid big-container" style="background-color:#f0f0f0;">
+    <div class="container-am" style="padding-top: 30px; padding-bottom: 56px;">
+        <div class="d-flex align-items-center flex-column mr-5">
+            <h1 class="display-4 ml-3" style="font-family: system-ui;">C'est quali tqt</h1>
+            <img src="/static/images/test.jpg" class="d-inline-block align-top ml-5 mr-5" style="width: 100px;" alt="Logo-sneakers">
+        </div>
+    </div>
+</div>
+
+
+{% endblock%}

@@ -1,0 +1,12 @@
+click
+Deprecated
+Flask
+importlib-metadata
+itsdangerous
+Jinja2
+MarkupSafe
+redis
+six
+Werkzeug
+wrapt
+zipp
