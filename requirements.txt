@@ -10,3 +10,4 @@ six
 Werkzeug
 wrapt
 zipp
+mysql-connector-python

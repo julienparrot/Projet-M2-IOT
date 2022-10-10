@@ -8,28 +8,42 @@ from flask import (
     session,
     url_for
 )
-import sqlite3
 import os
 from redis import Redis
 
+from mysql.connector import (connection)
+
 app = Flask(__name__)
 redis = Redis(host='redis', port=6379)
+
+cnx = connection.MySQLConnection(
+    user='root', password='root', host='mysql', port='3306', database='db')
+print("DB connect")
+
+cursor = cnx.cursor()
+cursor.execute('SELECT * FROM produit')
+produit = cursor.fetchall()
+cursor.execute('SELECT * FROM utilisateur')
+user = cursor.fetchall()
+cnx.close()
 
 @app.route('/')
 def defaultPage():
     return redirect(url_for('produit'))
 
 class User:
-    def __init__(self, id, username, password):
+    def __init__(self, id, username, password, role):
         self.id = id
         self.username = username
         self.password = password
+        self.role = role
 
     def __repr__(self):
         return f'<User: {self.username}>'
 
 users = []
-users.append(User(id=1, username='test', password='test'))
+for i in range(len(user)):
+    users.append(User(id=user[i][0], username=user[i][1], password=user[i][2], role=user[i][3]))
 
 class Produit:
     def __init__(self, id, code, marque, modele, coloris, prix, image):
@@ -45,33 +59,10 @@ class Produit:
         return f'<Produit: {self.code}>'
 
 listProduits = []
-listProduits.append(
-    Produit(id=1, code='SNKRS-001', marque='Nike', modele='Vaporwaffle Sacai', coloris='Black White', prix=570,
-            image='Nike-Sacai-Vaporwaffle-black-white.png'))
-listProduits.append(
-    Produit(id=2, code='SNKRS-002', marque='Nike', modele='Vaporwaffle Sacai', coloris='Sport Fuchsia Game Royal',
-            prix=590, image='Nike-Sacai-VaporWaffle-Game-Royal-Fuchsia.png'))
-listProduits.append(
-    Produit(id=3, code='SNKRS-003', marque='Nike', modele='Vaporwaffle Sacai', coloris='Tour Yellow Stadium Green',
-            prix=490, image='Nike-Sacai-VaporWaffle-Tour-Yellow-Stadium-Green.png'))
-listProduits.append(
-    Produit(id=4, code='SNKRS-004', marque='Nike', modele='Vaporwaffle Sacai', coloris='Villain Red Neptune Green',
-            prix=510, image='Nike-Sacai-Vaporwaffle-Villain-Red-Neptune-Green.png'))
-
-listProduits.append(Produit(id=5, code='SNKRS-005', marque='Nike', modele='Air Jordan 1 Retro High Travis Scott',
-                            coloris='Cactus Jack', prix=1520, image='Air-Jordan-1-Cactus-Jack-Travis-Scott.webp'))
-listProduits.append(
-    Produit(id=6, code='SNKRS-006', marque='Nike', modele='Air Jordan 1 Retro High Off-White', coloris='NRG White',
-            prix=2370, image='Air-Jordan-1-Retro-High-Off-White-The-Ten-NRJ.webp'))
-listProduits.append(
-    Produit(id=7, code='SNKRS-007', marque='Nike', modele='Air Jordan 1 Retro High', coloris='UNC Patent', prix=730,
-            image='Air-Jordan-1-Retro-High-UNC-Patent.webp'))
-listProduits.append(
-    Produit(id=8, code='SNKRS-008', marque='Nike', modele='Air Jordan 1 Retro High', coloris='Fearless OG',
-            prix=460, image='Air-Jordan-1-Retro-High-OG-Fearless.webp'))
-listProduits.append(
-    Produit(id=8, code='SNKRS-009', marque='Moi', modele='Cest moi', coloris='moi',
-            prix=10000000000, image='moi.png'))
+for i in range(len(produit)):
+    listProduits.append(
+        Produit(id=produit[i][0], code=produit[i][1], marque=produit[i][2], modele=produit[i][3], coloris=produit[i][4], prix=produit[i][5],
+                image=produit[i][6]))
 
 listPanier = []
 
@@ -156,7 +147,6 @@ def contact():
 
 if __name__ == "__main__":  
     app.run("0.0.0.0", debug=False)
-
 
 
 

@@ -11,6 +11,11 @@
     <div class="ml-5">
         <a href="/deconnexion"><button type="button" class="btn btn-danger">déconnexion</button></a>
     </div>
+    {% if g.user.role == 'admin' %}
+        <div class="ml-5">
+            <a href="/admin"><button type="button" class="btn btn-danger">Dashboard admin</button></a>
+        </div>
+    {% endif %}
 </div>
 {% endblock%}
 

@@ -8,5 +8,15 @@ services:
             - .:/code
         depends_on:
             - redis
+            - mysql
     redis:
         image: redis
+    mysql:
+        build: ./mysql/
+        restart: always
+        environment:
+            MYSQL_DATABASE: db
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_PASSWORD: password
+        ports:
+            - "3306:3306"
