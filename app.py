@@ -27,6 +27,8 @@ cursor.execute('SELECT * FROM utilisateur')
 user = cursor.fetchall()
 cnx.close()
 
+app_root = "/julienparrot/compose_flask"
+
 @app.route('/')
 def defaultPage():
     return redirect(url_for('produit'))
@@ -106,6 +108,32 @@ def produit():
 
     return render_template("view_produit.html", listProduits=listProduits, listPanier=listPanier)
 
+@app.route('/admin')
+def admin():
+    if not g.user:
+        return redirect(url_for('connexion'))
+
+    return render_template("view_admin.html", listProduits=listProduits)
+
+@app.route('/register')
+def register():
+    return render_template("register.html")
+
+@app.route('/addProduct')
+def addProduct():
+    if not g.user:
+        return redirect(url_for('connexion'))
+
+    return render_template("view_add_product.html")
+
+@app.route('/product/<code>/update')
+def updateProduct(code):
+    leProduit = [x for x in listProduits if x.code == code][0]
+    if not g.user:
+        return redirect(url_for('connexion'))
+
+    return render_template("view_update_admin.html", leProduit=leProduit)
+
 @app.route('/addPanier', methods=['GET', 'POST'])
 def addPanier():
     if not g.user:
@@ -119,6 +147,64 @@ def addPanier():
         return render_template("view_panier.html", listPanier=listPanier)
 
     return render_template("view_panier.html", listPanier=listPanier)
+
+@app.route('/addUser', methods=['GET', 'POST'])
+def addUser():
+    nb_user = len(users) + 1
+
+    if request.method == 'POST':
+        result = request.form
+        userName = result['username']
+        userPassword = result['password']
+        userRole = 'Visiteur'
+        users.append(
+        User(id=nb_user, username=userName, password=userPassword, role=userRole))
+    return redirect(url_for('connexion'))
+
+
+@app.route('/addProducts', methods=['GET', 'POST'])
+def addProducts():
+    nb_produit = len(listProduits) + 1
+    if not g.user:
+        return redirect(url_for('connexion'))
+
+    if request.method == 'POST':
+        result = request.form
+        produitCode = result['code']
+        produitMarque = result['marque']
+        produitModele = result['modele']
+        produitColoris = result['coloris']
+        produitPrix = result['prix']
+        produitImage = result['image']
+        listProduits.append(
+        Produit(id=nb_produit, code=produitCode, marque=produitMarque, modele=produitModele, coloris=produitColoris, prix=produitPrix,
+                image=produitImage))
+        return render_template("view_admin.html", listProduits=listProduits)
+
+    return render_template("view_admin.html", listProduits=listProduits)
+
+@app.route('/updateProducts', methods=['GET', 'POST'])
+def updateProducts():
+    if not g.user:
+        return redirect(url_for('connexion'))
+
+    if request.method == 'POST':
+        result = request.form
+        produitID = result['id']
+        produitCode = result['code']
+        produitMarque = result['marque']
+        produitModele = result['modele']
+        produitColoris = result['coloris']
+        produitPrix = result['prix']
+        produitImage = result['image']
+        leProduit = [x for x in listProduits if x.code == produitCode][0]
+        listProduits.remove(leProduit)
+        listProduits.append(
+        Produit(id=produitID, code=produitCode, marque=produitMarque, modele=produitModele, coloris=produitColoris, prix=produitPrix,
+                image=produitImage))
+        return render_template("view_admin.html", listProduits=listProduits)
+
+    return render_template("view_admin.html", listProduits=listProduits)
 
 @app.route('/delPanier', methods=['GET', 'POST'])
 def delPanier():
@@ -134,6 +220,19 @@ def delPanier():
 
     return render_template("view_panier.html", listPanier=listPanier)
 
+@app.route('/delProduit', methods=['GET', 'POST'])
+def delProduit():
+    if not g.user:
+        return redirect(url_for('connexion'))
+
+    if request.method == 'POST':
+        result = request.form
+        unProduit = result['produitCode']
+        leProduit = [x for x in listProduits if x.code == unProduit][0]
+        listProduits.remove(leProduit)
+        return render_template("view_admin.html", listProduits=listProduits)
+
+    return render_template("view_admin.html", listProduits=listProduits)
 
 @app.route('/panier')
 def panier():
@@ -143,7 +242,9 @@ def panier():
 
 @app.route('/contact')
 def contact():
-    return render_template("contact.html")
+    if not g.user:
+        return render_template("contact.html")
+    return redirect(url_for('connexion'))
 
 if __name__ == "__main__":  
     app.run("0.0.0.0", debug=False)

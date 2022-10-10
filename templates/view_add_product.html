@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Page Ajout d'un produit{% endblock%}
+
+
+
+
+
+
+{% block content %}
+<link type="text/css" rel="stylesheet" href="static/css/style_connexion.css">
+
+<div class="container">
+    <div class="row" style="justify-content: center;">
+        <div class="col-lg-4">
+            <div class="login-form">
+                <form action="/addProducts" method="post">
+                    <h2 class="text-center">Ajouter un produit</h2>
+                    <div class="form-group">
+                        <input type="text" name="code" class="form-control" placeholder="Code produit"
+                            required="required">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="marque" class="form-control" placeholder="Marque">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="modele" class="form-control" placeholder="Modèle">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="coloris" class="form-control" placeholder="Coloris">
+                    </div>
+                    <div class="form-group">
+                        <input type="number" name="prix" class="form-control" placeholder="Prix">
+                    </div>
+                    <div class="form-group">
+                        <input type="file" name="image" class="form-control" placeholder="Image produit">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" value="Envoyer" class="btn btn-primary btn-block p-0">Ajouter un produit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock%}
