@@ -8,44 +8,28 @@ from flask import (
     session,
     url_for
 )
+import sqlite3
 import os
 from redis import Redis
 
-from mysql.connector import (connection)
-
 app = Flask(__name__)
 redis = Redis(host='redis', port=6379)
-
-cnx = connection.MySQLConnection(
-    user='root', password='root', host='mysql', port='3306', database='db')
-print("DB connect")
-
-cursor = cnx.cursor()
-cursor.execute('SELECT * FROM produit')
-produit = cursor.fetchall()
-cursor.execute('SELECT * FROM utilisateur')
-user = cursor.fetchall()
-cnx.close()
-
-app_root = "/julienparrot/compose_flask"
 
 @app.route('/')
 def defaultPage():
     return redirect(url_for('produit'))
 
 class User:
-    def __init__(self, id, username, password, role):
+    def __init__(self, id, username, password):
         self.id = id
         self.username = username
         self.password = password
-        self.role = role
 
     def __repr__(self):
         return f'<User: {self.username}>'
 
 users = []
-for i in range(len(user)):
-    users.append(User(id=user[i][0], username=user[i][1], password=user[i][2], role=user[i][3]))
+users.append(User(id=1, username='test', password='test'))
 
 class Produit:
     def __init__(self, id, code, marque, modele, coloris, prix, image):
@@ -61,10 +45,33 @@ class Produit:
         return f'<Produit: {self.code}>'
 
 listProduits = []
-for i in range(len(produit)):
-    listProduits.append(
-        Produit(id=produit[i][0], code=produit[i][1], marque=produit[i][2], modele=produit[i][3], coloris=produit[i][4], prix=produit[i][5],
-                image=produit[i][6]))
+listProduits.append(
+    Produit(id=1, code='SNKRS-001', marque='Nike', modele='Vaporwaffle Sacai', coloris='Black White', prix=570,
+            image='Nike-Sacai-Vaporwaffle-black-white.png'))
+listProduits.append(
+    Produit(id=2, code='SNKRS-002', marque='Nike', modele='Vaporwaffle Sacai', coloris='Sport Fuchsia Game Royal',
+            prix=590, image='Nike-Sacai-VaporWaffle-Game-Royal-Fuchsia.png'))
+listProduits.append(
+    Produit(id=3, code='SNKRS-003', marque='Nike', modele='Vaporwaffle Sacai', coloris='Tour Yellow Stadium Green',
+            prix=490, image='Nike-Sacai-VaporWaffle-Tour-Yellow-Stadium-Green.png'))
+listProduits.append(
+    Produit(id=4, code='SNKRS-004', marque='Nike', modele='Vaporwaffle Sacai', coloris='Villain Red Neptune Green',
+            prix=510, image='Nike-Sacai-Vaporwaffle-Villain-Red-Neptune-Green.png'))
+
+listProduits.append(Produit(id=5, code='SNKRS-005', marque='Nike', modele='Air Jordan 1 Retro High Travis Scott',
+                            coloris='Cactus Jack', prix=1520, image='Air-Jordan-1-Cactus-Jack-Travis-Scott.webp'))
+listProduits.append(
+    Produit(id=6, code='SNKRS-006', marque='Nike', modele='Air Jordan 1 Retro High Off-White', coloris='NRG White',
+            prix=2370, image='Air-Jordan-1-Retro-High-Off-White-The-Ten-NRJ.webp'))
+listProduits.append(
+    Produit(id=7, code='SNKRS-007', marque='Nike', modele='Air Jordan 1 Retro High', coloris='UNC Patent', prix=730,
+            image='Air-Jordan-1-Retro-High-UNC-Patent.webp'))
+listProduits.append(
+    Produit(id=8, code='SNKRS-008', marque='Nike', modele='Air Jordan 1 Retro High', coloris='Fearless OG',
+            prix=460, image='Air-Jordan-1-Retro-High-OG-Fearless.webp'))
+listProduits.append(
+    Produit(id=8, code='SNKRS-009', marque='Moi', modele='Cest moi', coloris='moi',
+            prix=10000000000, image='moi.png'))
 
 listPanier = []
 
@@ -108,32 +115,6 @@ def produit():
 
     return render_template("view_produit.html", listProduits=listProduits, listPanier=listPanier)
 
-@app.route('/admin')
-def admin():
-    if not g.user:
-        return redirect(url_for('connexion'))
-
-    return render_template("view_admin.html", listProduits=listProduits)
-
-@app.route('/register')
-def register():
-    return render_template("register.html")
-
-@app.route('/addProduct')
-def addProduct():
-    if not g.user:
-        return redirect(url_for('connexion'))
-
-    return render_template("view_add_product.html")
-
-@app.route('/product/<code>/update')
-def updateProduct(code):
-    leProduit = [x for x in listProduits if x.code == code][0]
-    if not g.user:
-        return redirect(url_for('connexion'))
-
-    return render_template("view_update_admin.html", leProduit=leProduit)
-
 @app.route('/addPanier', methods=['GET', 'POST'])
 def addPanier():
     if not g.user:
@@ -147,65 +128,6 @@ def addPanier():
         return render_template("view_panier.html", listPanier=listPanier)
 
     return render_template("view_panier.html", listPanier=listPanier)
-
-@app.route('/addUser', methods=['GET', 'POST'])
-def addUser():
-    nb_user = len(users) + 1
-
-    if request.method == 'POST':
-        result = request.form
-        userName = result['username']
-        userPassword = result['password']
-        userRole = 'Visiteur'
-        users.append(
-        User(id=nb_user, username=userName, password=userPassword, role=userRole))
-    return redirect(url_for('connexion'))
-
-
-@app.route('/addProducts', methods=['GET', 'POST'])
-def addProducts():
-    nb_produit = len(listProduits) + 1
-    if not g.user:
-        return redirect(url_for('connexion'))
-
-    if request.method == 'POST':
-        result = request.form
-        produitCode = result['code']
-        produitMarque = result['marque']
-        produitModele = result['modele']
-        produitColoris = result['coloris']
-        produitPrix = int(result['prix'])
-        produitImage = result['image'] 
-
-        listProduits.append(
-        Produit(id=nb_produit, code=produitCode, marque=produitMarque, modele=produitModele, coloris=produitColoris, prix=produitPrix,
-                image=produitImage))
-        return render_template("view_admin.html", listProduits=listProduits)
-
-    return render_template("view_admin.html", listProduits=listProduits)
-
-@app.route('/updateProducts', methods=['GET', 'POST'])
-def updateProducts():
-    if not g.user:
-        return redirect(url_for('connexion'))
-
-    if request.method == 'POST':
-        result = request.form
-        produitID = result['id']
-        produitCode = result['code']
-        produitMarque = result['marque']
-        produitModele = result['modele']
-        produitColoris = result['coloris']
-        produitPrix = int(result['prix'])
-        produitImage = result['image']
-        leProduit = [x for x in listProduits if x.code == produitCode][0]
-        listProduits.remove(leProduit)
-        listProduits.append(
-        Produit(id=produitID, code=produitCode, marque=produitMarque, modele=produitModele, coloris=produitColoris, prix=produitPrix,
-                image=produitImage))
-        return render_template("view_admin.html", listProduits=listProduits)
-
-    return render_template("view_admin.html", listProduits=listProduits)
 
 @app.route('/delPanier', methods=['GET', 'POST'])
 def delPanier():
@@ -221,19 +143,6 @@ def delPanier():
 
     return render_template("view_panier.html", listPanier=listPanier)
 
-@app.route('/delProduit', methods=['GET', 'POST'])
-def delProduit():
-    if not g.user:
-        return redirect(url_for('connexion'))
-
-    if request.method == 'POST':
-        result = request.form
-        unProduit = result['produitCode']
-        leProduit = [x for x in listProduits if x.code == unProduit][0]
-        listProduits.remove(leProduit)
-        return render_template("view_admin.html", listProduits=listProduits)
-
-    return render_template("view_admin.html", listProduits=listProduits)
 
 @app.route('/panier')
 def panier():
@@ -243,9 +152,7 @@ def panier():
 
 @app.route('/contact')
 def contact():
-    if not g.user:
-        return render_template("contact.html")
-    return redirect(url_for('connexion'))
+    return render_template("contact.html")
 
 if __name__ == "__main__":  
     app.run("0.0.0.0", debug=False)
