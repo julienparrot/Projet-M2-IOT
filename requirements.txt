@@ -11,3 +11,4 @@ Werkzeug
 wrapt
 zipp
 mysql-connector-python
+gunicorn
