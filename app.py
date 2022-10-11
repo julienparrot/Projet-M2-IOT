@@ -174,8 +174,9 @@ def addProducts():
         produitMarque = result['marque']
         produitModele = result['modele']
         produitColoris = result['coloris']
-        produitPrix = result['prix']
-        produitImage = result['image']
+        produitPrix = int(result['prix'])
+        produitImage = result['image'] 
+
         listProduits.append(
         Produit(id=nb_produit, code=produitCode, marque=produitMarque, modele=produitModele, coloris=produitColoris, prix=produitPrix,
                 image=produitImage))
@@ -195,7 +196,7 @@ def updateProducts():
         produitMarque = result['marque']
         produitModele = result['modele']
         produitColoris = result['coloris']
-        produitPrix = result['prix']
+        produitPrix = int(result['prix'])
         produitImage = result['image']
         leProduit = [x for x in listProduits if x.code == produitCode][0]
         listProduits.remove(leProduit)
