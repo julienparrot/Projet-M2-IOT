@@ -1,7 +1,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-![alt text](https://github.com/julienparrot/Projet-M2-IOT/blob/feat/backend/static/images/test2.jpeg?raw=true)
+    <img src="blob/feat/backend/static/images/test2.jpeg" alt="Logo" width="80" height="80">
 
   <h3 align="center">Sneakers Project</h3>
 
@@ -60,8 +60,8 @@ On retrouve aussi un Backend avec:
 
 Projet construit avec
 
-- [![Python][python.org]][python-url]
-- [![MySQL][mysql.com]][mysql-url]
+- :snake: Python
+- :dolphin: MySQL
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
