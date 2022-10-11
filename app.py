@@ -29,7 +29,7 @@ class User:
         return f'<User: {self.username}>'
 
 users = []
-users.append(User(id=1, username='julien', password='parrot'))
+users.append(User(id=1, username='julien', password='password'))
 
 class Produit:
     def __init__(self, id, code, marque, modele, coloris, prix, image):
