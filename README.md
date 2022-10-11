@@ -1,7 +1,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-    ![alt text](https://github.com/julienparrot/Projet-M2-IOT/blob/feat/backend/static/images/test2.jpeg?raw=true)
+![alt text](https://github.com/julienparrot/Projet-M2-IOT/blob/feat/backend/static/images/test2.jpeg?raw=true)
 
   <h3 align="center">Sneakers Project</h3>
 
@@ -41,7 +41,7 @@
 
 ## About The Project
 
-    ![alt text](https://github.com/julienparrot/Projet-M2-IOT/blob/feat/backend/static/images/docs/doc1.png?raw=true)
+![alt text](https://github.com/julienparrot/Projet-M2-IOT/blob/feat/backend/static/images/docs/doc1.png?raw=true)
 
 Projet M2 IOT d'une application e commerce de snearkers dockerisé avec Flask et mySQL
 On retrouve un Frontend avec:
@@ -99,7 +99,7 @@ docker-compose up --build
 
 ## Usage
 
-    ![alt text](https://github.com/julienparrot/Projet-M2-IOT/blob/feat/backend/static/images/docs/Capture%20d%E2%80%99%C3%A9cran%202022-10-11%20%C3%A0%2014.50.51.png?raw=true)
+![alt text](https://github.com/julienparrot/Projet-M2-IOT/blob/feat/backend/static/images/docs/Capture%20d%E2%80%99%C3%A9cran%202022-10-11%20%C3%A0%2014.50.51.png?raw=true)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
