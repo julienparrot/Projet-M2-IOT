@@ -93,6 +93,12 @@ git clone https://github.com/julienparrot/Projet-M2-IOT.git
 docker-compose up --build
 ```
 
+3. Compte admin
+
+```sh
+username:julien/password:password
+```
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- USAGE EXAMPLES -->
