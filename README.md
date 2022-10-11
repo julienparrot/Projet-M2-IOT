@@ -93,6 +93,8 @@ git clone https://github.com/julienparrot/Projet-M2-IOT.git
 docker-compose up --build
 ```
 
+(Ca peut prend un peu de temps avant de démarrer envion 30 seconde)
+
 3. Compte admin
 
 ```sh
