@@ -8,6 +8,9 @@
   <p align="center">
     Ce projet est une application flask ecommerce de sneakers
     <br />
+    <br />
+        <a href="https://dry-eyrie-39600.herokuapp.com/produit">Demo version 1 du projet</a>
+
   </p>
 </div>
 
