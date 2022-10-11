@@ -29,7 +29,7 @@ class User:
         return f'<User: {self.username}>'
 
 users = []
-users.append(User(id=1, username='test', password='test'))
+users.append(User(id=1, username='julien', password='parrot'))
 
 class Produit:
     def __init__(self, id, code, marque, modele, coloris, prix, image):
@@ -156,7 +156,6 @@ def contact():
 
 if __name__ == "__main__":  
     app.run("0.0.0.0", debug=False)
-
 
 
 

@@ -6,7 +6,10 @@
 <div class="d-flex align-items-center justify-content-end mr-5">
     <img src="/static/images/user-regular.svg" style="width: 25px; height: 25px;"> Hey, {{g.user.username}}
     <div class="ml-3 mr-5">
-        <a href="/panier"><div class="ml-3 text-danger"><img src="/static/images/shopping-cart-solid.svg" style="width: 25px; height: 25px;"> {{listPanier|length}} Article(s)</div></a>
+        <a href="/panier">
+            <div class="ml-3 text-danger"><img src="/static/images/shopping-cart-solid.svg"
+                    style="width: 25px; height: 25px;"> {{listPanier|length}} Article(s)</div>
+        </a>
     </div>
     <div class="ml-5">
         <a href="/deconnexion"><button type="button" class="btn btn-danger">déconnexion</button></a>
@@ -30,18 +33,20 @@
         </div>
         <div class="row rowNoGutters mt-5" style="text-align: -webkit-center;">
             {% for produit in listProduits %}
-                <div class="col-lg-3 col-md-4 col-sm-6 mt-3 mb-3 mb-xl-5 itemSquare animate__animated animate__flipInX" style="animation-name: zoomIn;">
-                    <img src="/static/images/produits/{{produit.image}}">
-                    <div class="divbutton text-center m-4 p-5">
-                        <p><strong>{{produit.modele}} - {{produit.coloris}} </strong></p>
-                        <p>{{produit.marque}}</p>
-                        <p style="color: #878786;">{{produit.prix}} €</p>
-                        <form action="/addPanier" method="post">
-                            <input type="text" id="produitCode" style="display:none;" name="produitCode" value="{{produit.code}}">
-                            <button type="submit" value="{{produit}}" class="btn btn-primary">Ajouter au panier</button>
-                        </form>
-                    </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 mt-3 mb-3 mb-xl-5 itemSquare animate__animated animate__flipInX"
+                style="animation-name: zoomIn;">
+                <img src="/static/images/produits/{{produit.image}}">
+                <div class="divbutton text-center m-4 p-5">
+                    <p><strong>{{produit.modele}} - {{produit.coloris}} </strong></p>
+                    <p>{{produit.marque}}</p>
+                    <p style="color: #878786;">{{produit.prix}} €</p>
+                    <form action="/addPanier" method="post">
+                        <input type="text" id="produitCode" style="display:none;" name="produitCode"
+                            value="{{produit.code}}">
+                        <button type="submit" value="{{produit}}" class="btn btn-primary">Ajouter au panier</button>
+                    </form>
                 </div>
+            </div>
             {% endfor %}
         </div>
     </div>
@@ -49,6 +54,3 @@
 
 
 {% endblock%}
-
-
-
